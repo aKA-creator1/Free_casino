@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>NEON CASINO 🎰</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="bg-coins"></canvas>
+<div id="coin-rain"></div>
+
+<header class="topbar">
+  <div class="logo">🎰 <span>NEON</span> CASINO</div>
+  <div class="balance-pill" id="balance-pill">💰 <b id="balance">0</b></div>
+</header>
+<div class="live-line"><div class="live-track" id="live-track"></div></div>
+
+<main id="app">
+  <!-- ТАПАЛКА -->
+  <section class="page active" id="page-tap">
+    <div class="tap-stats">
+      <div class="stat">👆 Тапов: <b id="taps">0</b></div>
+      <div class="stat">🎮 Уровень: <b id="level">1</b></div>
+      <div class="stat">⚡ Энергия: <b class="inf">∞</b></div>
+    </div>
+    <div class="combo-wrap"><div class="combo-fill" id="combo-fill"></div><span id="combo-text">КОМБО x1</span></div>
+    <div class="coin-zone">
+      <div class="coin-glow"></div>
+      <button class="big-coin" id="big-coin">🪙</button>
+      <div class="tap-hint">ТАПАЙ И ФАРМИ НА ДЕП!</div>
+    </div>
+    <div class="tap-info">💡 0.5 монеты за тап • 10% шанс <b>x5</b> • 1% шанс <b>x20</b><br>Безлимит, но после 1000 тапов/день награда режется — чтобы не зажрался 😉</div>
+    <div class="daily-box">
+      <button class="btn gold" id="daily-btn">🎁 Забрать дейли 500</button>
+      <div class="small" id="daily-timer"></div>
+    </div>
+  </section>
+
+  <!-- ИГРЫ -->
+  <section class="page" id="page-games">
+    <div class="games-grid">
+      <button class="game-card" data-game="slots">🎰<span>Слоты</span></button>
+      <button class="game-card" data-game="dice">🎲<span>Дайс</span></button>
+      <button class="game-card" data-game="roulette">🎡<span>Рулетка</span></button>
+      <button class="game-card" data-game="mines">💣<span>Мины</span></button>
+      <button class="game-card" data-game="crash">🚀<span>Краш</span></button>
+      <button class="game-card" data-game="blackjack">🃏<span>Блекджек</span></button>
+    </div>
+    <div id="game-area"></div>
+  </section>
+
+  <!-- КЕЙСЫ -->
+  <section class="page" id="page-cases">
+    <h2 class="neon-title">📦 КЕЙСЫ <span class="mini">как в CaseBattle</span></h2>
+    <div id="cases-list"></div>
+    <div id="case-open-area"></div>
+    <h3 class="neon-title">🎒 Инвентарь <span class="mini">— продай или выведи как подарок TG</span></h3>
+    <div id="inventory" class="inv-grid"></div>
+    <h3 class="neon-title">🎁 Депозит подарком TG</h3>
+    <div class="gift-row" id="gift-row"></div>
+    <div class="small">Нажми на подарок — он виртуально конвертнется в монеты. Всё понарошку, без реальных денег.</div>
+  </section>
+
+  <!-- ОНЛАЙН -->
+  <section class="page" id="page-online">
+    <h2 class="neon-title">⚔️ PvP-ДУЭЛИ</h2>
+    <div class="duel-create">
+      <select id="duel-game">
+        <option value="coinflip">🪙 Монетка 50/50</option>
+        <option value="dice">🎲 Дайс-дуэль</option>
+        <option value="rps">✊✌️✋ КНБ-дуэль</option>
+      </select>
+      <input id="duel-bet" type="number" value="100" min="10" step="10">
+      <button class="btn neon" id="duel-create-btn">Создать дуэль</button>
+    </div>
+    <div class="small">Комиссия 5% с банка сжигается — казино всегда в плюсе 😈</div>
+    <div id="duels-list"></div>
+    <h2 class="neon-title">🏆 РЕЙТИНГ</h2>
+    <div id="leaderboard"></div>
+    <h2 class="neon-title">💬 ЧАТ</h2>
+    <div id="chat-box"></div>
+    <div class="chat-send"><input id="chat-input" placeholder="Написать..." maxlength="200"><button class="btn neon" id="chat-btn">➤</button></div>
+  </section>
+
+  <!-- ПРОФИЛЬ -->
+  <section class="page" id="page-profile">
+    <div class="profile-card">
+      <div class="ava" id="ava">👤</div>
+      <div><div class="pname" id="pname">Игрок</div><div class="small" id="pid"></div></div>
+    </div>
+    <div class="profile-stats" id="profile-stats"></div>
+    <div id="admin-panel" style="display:none" class="admin-box">
+      <h2 class="neon-title">🛠 АДМИНКА</h2>
+      <div class="small">Твой ID: <b id="admin-id"></b> — ты главный 😎</div>
+      <input id="adm-target" placeholder="TG ID игрока">
+      <input id="adm-amount" type="number" placeholder="Сумма">
+      <div class="row">
+        <button class="btn gold" id="adm-give">➕ Дать</button>
+        <button class="btn red" id="adm-take">➖ Забрать</button>
+        <button class="btn neon" id="adm-stats">📊 Стата</button>
+      </div>
+      <div id="adm-out" class="small"></div>
+    </div>
+    <div class="small" style="margin-top:12px">⚠️ Все монеты виртуальные. Реальных денег нет и не будет. Играй ради фана!</div>
+  </section>
+</main>
+
+<nav class="tabbar">
+  <button class="tab active" data-page="tap">👆<span>Фарм</span></button>
+  <button class="tab" data-page="games">🎲<span>Игры</span></button>
+  <button class="tab" data-page="cases">📦<span>Кейсы</span></button>
+  <button class="tab" data-page="online">🌐<span>Онлайн</span></button>
+  <button class="tab" data-page="profile">👤<span>Профиль</span></button>
+</nav>
+
+<div id="toast"></div>
+<div id="win-modal" class="modal"><div class="modal-box"><div class="modal-emoji" id="win-emoji">🎉</div><div class="modal-title" id="win-title">+1000</div><div class="modal-sub" id="win-sub"></div><button class="btn gold" id="win-ok">ЗАБРАТЬ</button></div></div>
+
+<script src="app.js"></script>
+</body>
+</html>
